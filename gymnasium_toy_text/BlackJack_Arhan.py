@@ -93,3 +93,23 @@ learned_policy, Q = mc_control_epsilon_greedy(env, episodes=10000, epsilon=0.1)
 
 print("Evaluating learned policy...")
 evaluate_policy(env, learned_policy, episodes=2000)
+
+total_rewards_renderning = []
+
+for j in range(20):
+    
+    def policy_fn(state):
+        return learned_policy.get(state, np.random.choice([0, 1]))
+    
+    env=gym.make("Blackjack-v1", sab=True, render_mode="human")
+    state, info = env.reset()
+    
+    action = policy_fn(state)
+    state, reward, terminated, truncated, info = env.step(action)
+    if terminated or truncated:
+        total_rewards_renderning.append(reward)
+    j+=1
+
+no_of_games_render=len(total_rewards_renderning)
+num_wins_render=total_rewards_renderning.count(1)
+print(num_wins_render/no_of_games_render*100)
