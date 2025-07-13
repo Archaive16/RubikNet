@@ -8,7 +8,7 @@ from collections import defaultdict
 env = gym.make("Blackjack-v1", sab=True)
 
 def monte_carlo(n_episodes, epsilon, alpha, gamma, Q):
-    for _ in range(n_episodes):
+    for i in range(n_episodes):
         episode = generate_ep(Q, epsilon)    # output = tuple(states, actions, rewards)
         states, actions, rewards = zip(*episode)
         epsilon *= 0.99995    # decay epsilon
@@ -61,7 +61,7 @@ def get_win_rate(Q, n_episodes):
 
 Q = defaultdict(lambda: np.zeros(2))
 print("Training...")
-Q = monte_carlo(100000, 1.0, 0.4, 0.9999, Q)
+Q = monte_carlo(100000, 1.0, 0.4, 0.99999, Q)    # n, epsilon, alpha, gamma, q
 
 print("Calculating...")
-print(f"Win Rate: {get_win_rate(Q, 10000)}")
+print(f"Win Rate: {get_win_rate(Q, 10000)}")    # q, n 
