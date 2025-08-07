@@ -2,14 +2,22 @@ import numpy as np
 import random
 
 class Cube:
-    def __init__(self):
+    def __init__(self, state=None):
         self.reset_cube()
         self.move_history = []
+        self.moves=["U", "D", "F", "B", "R", "L", "U'", "D'", "F'", "B'", "R'", "L'"]
+        if state is not None:
+            self.state=state
+        else:
+            self.reset_cube()
 
     def reset_cube(self):
         self.state = ["w"]*9 + ["y"]*9 + ["b"]*9 + ["g"]*9 + ["r"]*9 + ["o"]*9
+        self.history = []
 
     def is_solved(self):
+        if self.state is None:
+            return False
         for i in range(0, 54, 9):
             if len(set(self.state[i:i+9])) != 1:
                 return False
@@ -33,6 +41,26 @@ class Cube:
         print("D:", self.state[27:36])
         print("R:", self.state[36:45])
         print("L:", self.state[45:54])
+
+    def get_one_hot_encoded(self):
+        color_map = {"w": 0, "y": 1, "b": 2, "g": 3, "r": 4, "o": 5}
+        one_hot= np.zeros((54, 6), dtype=int)
+        for i, color in enumerate(self.state):
+            if color in color_map:
+                one_hot[i][color_map[color]] = 1
+        return one_hot
+    
+    def get_reward(self):
+        return 1 if self.is_solved() else -1
+    
+
+    def get_child_states(self):
+        children = []
+        for move in self.moves:
+            new_cube = Cube(state=self.state.copy())
+            new_cube.move(move)
+            children.append(new_cube)
+        return children
 
     def switch(self, move, cube):
         cube = cube.copy()
@@ -119,3 +147,13 @@ cube.print_cube()
 print(cube.is_solved())
 cube.scramble(5)
 print(cube.move_history)
+# children = cube.get_child_states()
+
+# for child in children:
+    
+#     print(child.state)  
+#     print("Is Solved:", child.is_solved())
+#     print("---")
+
+onehot=cube.get_one_hot_encoded()
+print(len(onehot))
