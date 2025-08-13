@@ -1,11 +1,12 @@
 import numpy as np
 import random
+import csv
 
 class Cube:
     def __init__(self, state=None):
         self.reset_cube()
         self.move_history = []
-        self.scramble_states = []  # <-- stores states during scramble
+        self.scramble_states = [] 
         self.moves=["U", "D", "F", "B", "R", "L", "U'", "D'", "F'", "B'", "R'", "L'"]
         if state is not None:
             self.state = state.copy()
@@ -13,7 +14,7 @@ class Cube:
     def reset_cube(self):
         self.state = ["w"]*9 + ["y"]*9 + ["b"]*9 + ["g"]*9 + ["r"]*9 + ["o"]*9
         self.history = []
-
+    
     def is_solved(self):
         if self.state is None:
             return False
@@ -21,13 +22,21 @@ class Cube:
             if len(set(self.state[i:i+9])) != 1:
                 return False
         return True
-
+    
     def scramble(self, n):
-        moves = ["U", "D", "F", "B", "R", "L", "U'", "D'", "F'", "B'", "R'", "L'"]
-        sequence = [random.choice(moves) for _ in range(n)]
-        for move in sequence:
+        moves = self.moves
+        self.scramble_states = [] 
+        self.move_history = []
+        for turn in range(n):
+            move = random.choice(moves)
             self.move(move)
-        print("Scramble moves:", ' '.join(sequence))
+            self.scramble_states.append({
+                "state": self.state.copy(),
+                "moves": self.move_history.copy(),
+                "turns": turn + 1
+            })
+        print("Scramble moves:", ' '.join(self.move_history))
+
 
     def move(self, move_name):
         self.move_history.append(move_name)
@@ -41,26 +50,10 @@ class Cube:
         print("R:", self.state[36:45])
         print("L:", self.state[45:54])
 
-    def get_one_hot_encoded(self):
-        color_map = {"w": 0, "y": 1, "b": 2, "g": 3, "r": 4, "o": 5}
-        one_hot= np.zeros((54, 6), dtype=int)
-        for i, color in enumerate(self.state):
-            if color in color_map:
-                one_hot[i][color_map[color]] = 1
-        return one_hot
-    
+
     def get_reward(self):
         return 1 if self.is_solved() else -1
     
-
-    def get_child_states(self):
-        children = []
-        for move in self.moves:
-            new_cube = Cube(state=self.state.copy())
-            new_cube.move(move)
-            children.append(new_cube)
-        return children
-
     def switch(self, move, cube):
         cube = cube.copy()
 
@@ -134,25 +127,55 @@ class Cube:
             print(f"Invalid move: {move}")
 
         return cube
-
-
-
-cube=Cube()
-cube.print_cube()
-print(cube.is_solved())
-cube.scramble(5)
-cube.reset_cube()
-cube.print_cube()
-print(cube.is_solved())
-cube.scramble(5)
-print(cube.move_history)
-# children = cube.get_child_states()
-
-# for child in children:
     
-#     print(child.state)  
-#     print("Is Solved:", child.is_solved())
-#     print("---")
+    def get_child_states_at_all_steps(self):
+        all_children = []
+        for scramble_state in self.scramble_states:
+            base_state = scramble_state["state"]
+            children = []
+            for move in self.moves:
+                new_cube = Cube(state=base_state.copy())
+                new_cube.move(move)
+                children.append(new_cube)
+            all_children.append(children)
+        return all_children
 
-onehot=cube.get_one_hot_encoded()
-print(len(onehot))
+
+
+
+def generate_dataset(k, L, filename="cube_dataset.csv"):
+    cube = Cube()
+    moves = cube.moves
+
+    with open(filename, mode="w", newline="") as file:
+        writer = csv.writer(file)
+
+        
+        writer.writerow([
+            "scramble_run", "scramble_step", "base_move",
+            "child_move", "base_state", "child_state"
+        ])
+
+        for scramble_run in range(1, L+1):
+            cube.reset_cube()
+            cube.scramble(k)  
+
+            all_children = cube.get_child_states_at_all_steps()
+
+            for step_num, children in enumerate(all_children, start=1):
+                base_state = cube.scramble_states[step_num-1]["state"]
+                base_move = cube.scramble_states[step_num-1]["moves"][-1] 
+
+                for child_move, child_cube in zip(moves, children):
+                    writer.writerow([
+                        scramble_run, step_num, base_move,
+                        child_move,
+                        ''.join(base_state), 
+                        ''.join(child_cube.state)
+                    ])
+
+    print(f"Dataset saved to {filename}")
+
+
+generate_dataset(k=5, L=5) 
+
