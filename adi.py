@@ -145,6 +145,9 @@ class Cube:
             all_children.append(children)
         return all_children
 
+device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"device available ", device)
+
 class ADI(nn.Module):
     def __init__(self):
         super().__init__()
@@ -287,7 +290,7 @@ def prepare_dataloader(df, batch_size, shuffle=True):
 
 def train_adi(num_epochs, batch_size, batch_iterations=1, scramble_depth=5, scramble_runs_per_epoch=50):
 
-    model = ADI()
+    model = ADI().to(device)
 
     policy_params = list(model.fc3_1.parameters()) + list(model.fc_policy_out.parameters())
     value_params = list(model.fc3_2.parameters()) + list(model.fc_value_out.parameters())
