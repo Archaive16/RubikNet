@@ -177,5 +177,5 @@ def generate_dataset(k, L, filename="cube_dataset.csv"):
     print(f"Dataset saved to {filename}")
 
 
-generate_dataset(k=5, L=5) 
+generate_dataset(k=3,L=1) 
 
