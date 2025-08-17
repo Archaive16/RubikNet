@@ -31,14 +31,14 @@ def q_learning(alpha, gamma, epsilon, min_epsilon, decay_rate, num_episodes):
             total_reward += reward
             completed = terminated or truncated
             # bellman eqn
-            Q[*state, action] += alpha * (reward + gamma * np.max(Q[*next_state]) - Q[*state, action])
+            Q[tuple(state), action] += alpha * (reward + gamma * np.max(Q[tuple(next_state)]) - Q[tuple(state), action])
             state = next_state
             epsilon = max(epsilon * decay_rate, min_epsilon) # decay epsilon
     return Q
 
 def take_action(Q, actions, state, epsilon):
     if np.random.rand() > epsilon:
-        action = np.argmax(Q[*state])
+        action = np.argmax(Q[tuple(state)])
     else:
         action = np.random.randint(0, len(actions))
     return action
@@ -55,7 +55,7 @@ def evaluate(Q):
     state, _ = env.reset()
     state = discretize_state(state)
     while not completed:
-        action = np.argmax(Q[*state])
+        action = np.argmax(Q[tuple(state)])
         next_state, reward, terminated, truncated, _ = env.step(action)
         total_reward += reward
         completed = terminated or truncated
