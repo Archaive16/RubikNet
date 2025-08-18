@@ -1,5 +1,5 @@
 import random
-import torch
+
 import numpy as np
 
 # Color mapping for encoding cube states
@@ -11,6 +11,19 @@ color_map = {
     'r': [0, 0, 0, 0, 1, 0],  # Red
     'o': [0, 0, 0, 0, 0, 1]   # Orange
 }
+
+def find_action_index(parent_state, child_state):
+    
+    test_cube = Cube(state=parent_state.copy())  
+    for i, move in enumerate(test_cube.moves):
+        new_cube = Cube(state=parent_state.copy())  
+        new_cube.move(move)
+
+        if new_cube.state == child_state:
+            return i , move 
+
+    return -1  
+
 
 
 def encode_cube_state(state_str):
@@ -174,3 +187,17 @@ class Cube:
                 children.append(new_cube)
             all_children.append(children)
         return all_children
+
+
+cube = Cube()
+cube.scramble(1)
+
+parent_state = cube.scramble_states[0]["state"]
+child_cube = Cube(state=parent_state.copy())
+child_cube.move("U")
+
+child_state = child_cube.state
+
+idx = find_action_index(parent_state, child_state)
+print("Action index:", idx, " ", cube.moves[i])
+
