@@ -310,11 +310,11 @@ def test_model(model_path='deepcube_adi_model.pth', num_tests=10, scramble_depth
 
 if __name__ == "__main__":
     # TRAINING PARAMETERS
-    NUM_EPOCHS = 10
+    NUM_EPOCHS = 100
     BATCH_SIZE = 64
     BATCH_ITERATIONS = 10
-    SCRAMBLE_DEPTH = 12
-    SCRAMBLE_RUNS_PER_EPOCH = 200
+    SCRAMBLE_DEPTH = 20
+    SCRAMBLE_RUNS_PER_EPOCH = 1000
 
     print("Starting ADI training...")
     print(f"Configuration:")
