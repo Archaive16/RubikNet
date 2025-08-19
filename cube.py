@@ -1,6 +1,5 @@
 import random
 import torch 
-
 import numpy as np
 
 # Color mapping for encoding cube states
@@ -188,7 +187,3 @@ class Cube:
                 children.append(new_cube)
             all_children.append(children)
         return all_children
-
-
-
-
