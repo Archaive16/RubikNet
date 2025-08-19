@@ -1,4 +1,5 @@
 import random
+import torch 
 
 import numpy as np
 
@@ -189,15 +190,5 @@ class Cube:
         return all_children
 
 
-cube = Cube()
-cube.scramble(1)
 
-parent_state = cube.scramble_states[0]["state"]
-child_cube = Cube(state=parent_state.copy())
-child_cube.move("U")
-
-child_state = child_cube.state
-
-idx = find_action_index(parent_state, child_state)
-print("Action index:", idx, " ", cube.moves[i])
 
