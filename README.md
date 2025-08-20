@@ -30,10 +30,11 @@ This folder is designed as a **introduction** on deep learning.
 ---
 
 ## 📂 Cube Solver
-This folder contains the **solver logic** for the Rubik’s Cube.  
+This folder contains the **solver logic** for the Rubik’s Cube. 
+- Implemented **ADI(Autodidactic Iteration)** or Self Supervised Learning for cube solving.
 - Includes **BFS/MCTS-based solvers** and classical search approaches.  
 - Can be used standalone to find solutions to scrambled states.  
-- Forms the backbone for testing learned models against logical solvers.  
+
 
 ---
 
