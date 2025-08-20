@@ -19,10 +19,13 @@ These experiments build the foundation for applying RL to more complex tasks lik
 ---
 
 ## 📂 Deep Learning
-This folder explores **neural network models** for cube state prediction and policy approximation.  
-- Includes supervised learning experiments (state → move prediction).  
-- Explores architectures like CNNs/MLPs for cube representation.  
-- Supports integration with the RL agent for faster convergence.  
+This folder is designed as a **introduction** on deep learning.  
+- Covers the basics of **neural networks** and how they learn.  
+- Hands-on projects on:  
+  - **Digit Recognition (MNIST)**  
+  - **Fashion Classification (Fashion-MNIST)**  
+- Helps build the foundation needed before moving on to Reinforcement Learning and Cube Solvers.  
+
 
 ---
 
