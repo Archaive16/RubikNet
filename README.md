@@ -1,22 +1,58 @@
-# RubikNet
-Deep Reinforcement Learning for Rubik’s Cube Solving with Stepper Motor Apparatus
+# RubikNet 🧩
 
-## Project Domains:
-Reinforcement Learning, Python Programming, Robotics Simulation
+RubikNet is a project exploring how AI and robotics can solve the Rubik’s Cube using **Reinforcement Learning**, **Deep Learning**, and **Search-based Solvers**.  
+This repository is organized into three main components:
 
-## Project Description
-This project will introduce us to physical systems based RL-policy networks and logic solvers by building a system that can solve a Rubik’s Cube. Starting with a 2x2 cube and progressing to the standard 3x3, students will develop a Deep Reinforcement Learning (DeepRL) agent capable of learning optimal sequences of moves to solve the cube from any scrambled state.
-The learned move sequences will be executed by a low-cost robotic setup driven by stepper motors and controlled via an ESP32 microcontroller. Along the way, we will gain hands-on experience in Python, RL frameworks, reward engineering, computer vision for cube state recognition, and embedded systems programming.
-By the end of the project, we will have a working pipeline that connects decision-making AI with real-world actuation—a complete software-to-hardware system.
+---
 
-___
+## 📂 Reinforcement Learning
+This folder contains experiments and implementations of **RL agents** trained to solve the Rubik’s Cube environment.  
+- Uses Gymnasium-based cube simulations.  
+- Implements algorithms like Monte Carlo Tree Search (MCTS) and policy/value networks.  
+- Focus on **learning from self-play** and **reward engineering**.  
+
+---
+
+## 📂 Deep Learning
+This folder explores **neural network models** for cube state prediction and policy approximation.  
+- Includes supervised learning experiments (state → move prediction).  
+- Explores architectures like CNNs/MLPs for cube representation.  
+- Supports integration with the RL agent for faster convergence.  
+
+---
+
+## 📂 Cube Solver
+This folder contains the **solver logic** for the Rubik’s Cube.  
+- Includes **BFS/MCTS-based solvers** and classical search approaches.  
+- Can be used standalone to find solutions to scrambled states.  
+- Forms the backbone for testing learned models against logical solvers.  
+
+---
+
+## 🚀 Usage
+We recommend using [uv](https://docs.astral.sh/uv/) for environment management.  
+To set up the project:  
+
+```bash
+# Install uv (if not already installed)
+pip install uv
+
+# Sync dependencies
+uv sync
+```
+
+## 🔗 Connect with us
 
 
-### Mentors:
-- Ansh Semwal
-- Akash Kawle
+#### Arhan Chavare  
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Archaive16)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/arhan-chavare-5a23a8334/)  
 
-### Mentees:
-- Arhan Chavare
-- Rigvedi Borchate
+### Rigvedi Borchate  
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rigvedi-3301)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rigvedi-borchate-50b210330/)  
+
+
+
+
   
