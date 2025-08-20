@@ -233,9 +233,9 @@ def train_adi(num_epochs, batch_size, batch_iterations=1, scramble_depth=5, scra
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-    # Save model
-    torch.save(model.state_dict(), 'deepcube_adi_model.pth')
-    print(f"\nModel saved as 'deepcube_adi_model.pth'")
+        torch.save(model.state_dict(), 'deepcube_adi_model.pth')
+        print(f"\nModel saved as 'deepcube_adi_model.pth'")
+
 
     return model, batch_losses, epoch_losses, policy_losses, val_losses
 
@@ -310,7 +310,7 @@ def test_model(model_path='deepcube_adi_model.pth', num_tests=10, scramble_depth
 
 if __name__ == "__main__":
     # TRAINING PARAMETERS
-    NUM_EPOCHS = 100
+    NUM_EPOCHS = 25
     BATCH_SIZE = 64
     BATCH_ITERATIONS = 10
     SCRAMBLE_DEPTH = 20
