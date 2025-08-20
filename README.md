@@ -5,7 +5,7 @@ This repository is organized into three main components:
 
 ---
 
-## 📂 Reinforcement Learning
+## [📂 Reinforcement Learning](https://github.com/Archaive16/RubikNet/tree/main/reinforcement_learning)
 This folder contains our experiments with **RL agents** trained on classic control environments.  
 We have implemented and solved the following environments:  
 
@@ -18,7 +18,7 @@ These experiments build the foundation for applying RL to more complex tasks lik
 
 ---
 
-## 📂 Deep Learning
+## [📂 Deep Learning](https://github.com/Archaive16/RubikNet/tree/main/deep_learning)
 This folder is designed as a **introduction** on deep learning.  
 - Covers the basics of **neural networks** and how they learn.  
 - Hands-on projects on:  
@@ -29,7 +29,7 @@ This folder is designed as a **introduction** on deep learning.
 
 ---
 
-## 📂 Cube Solver
+## [📂 Cube Solver](https://github.com/Archaive16/RubikNet/tree/main/cube_solver)
 This folder contains the **solver logic** for the Rubik’s Cube. 
 - Implemented **ADI(Autodidactic Iteration)** or Self Supervised Learning for cube solving.
 - Includes **BFS/MCTS-based solvers** and classical search approaches.  
