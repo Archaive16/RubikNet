@@ -1,6 +1,6 @@
 import random
 import torch 
-git import numpy as np
+import numpy as np
 
 # Color mapping for encoding cube states
 color_map = {
