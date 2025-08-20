@@ -6,10 +6,15 @@ This repository is organized into three main components:
 ---
 
 ## 📂 Reinforcement Learning
-This folder contains experiments and implementations of **RL agents** trained to solve the Rubik’s Cube environment.  
-- Uses Gymnasium-based cube simulations.  
-- Implements algorithms like Monte Carlo Tree Search (MCTS) and policy/value networks.  
-- Focus on **learning from self-play** and **reward engineering**.  
+This folder contains our experiments with **RL agents** trained on classic control environments.  
+We have implemented and solved the following environments:  
+
+- 🏗 **CartPole** – balancing a pole on a cart  
+- 🚕 **Taxi** – navigating a taxi to pick up and drop passengers  
+- 🚙 **MountainCar** – driving a car up a steep hill with limited power  
+- 🃏 **Blackjack** – learning strategies for the card game using Monte Carlo methods  
+
+These experiments build the foundation for applying RL to more complex tasks like solving the Rubik’s Cube.  
 
 ---
 
