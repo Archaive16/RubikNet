@@ -310,7 +310,7 @@ def test_model(model_path='deepcube_adi_model.pth', num_tests=10, scramble_depth
 
 if __name__ == "__main__":
     # TRAINING PARAMETERS
-    NUM_EPOCHS = 25
+    NUM_EPOCHS = 75
     BATCH_SIZE = 64
     BATCH_ITERATIONS = 10
     SCRAMBLE_DEPTH = 20

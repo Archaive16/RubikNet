@@ -73,7 +73,7 @@ def decode_cube_state(encoded_state):
 
 
 model = ADI()
-model.load_state_dict(torch.load("deepcube_adi_model.pth"))
+model.load_state_dict(torch.load("deepcube_adi_model.pth", map_location='cpu'))
 model.eval()
 
 
@@ -217,7 +217,7 @@ def mcts(state, num_simulations, max_solution_depth):
     if root.is_solved:
         return [], True
     
-    # BFS for short solutions
+  
     queue = [(root, [])]
     visited = set()
     
@@ -241,7 +241,7 @@ def mcts(state, num_simulations, max_solution_depth):
             if len(new_path) < max_solution_depth:
                 queue.append((child, new_path))
     
-    # MCTS simulations
+   
     solution_found = False
     solution_node = None
     

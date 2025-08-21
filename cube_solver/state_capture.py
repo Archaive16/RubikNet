@@ -113,3 +113,7 @@ print("\nFinal Verified Colors:")
 for i in range(54):
     print(f"a[{i}] = {colors_array[i]}")
 
+
+def save_cube():
+    cube=colors_array.copy()
+    return cube
