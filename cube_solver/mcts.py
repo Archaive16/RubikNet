@@ -72,13 +72,13 @@ def decode_cube_state(encoded_state):
     return decoded
 
 
-model = ADI()
-model.load_state_dict(torch.load("deepcube_adi_model.pth", map_location='cpu'))
-model.eval()
+# model = ADI()
+# model.load_state_dict(torch.load("deepcube_adi_model.pth", map_location='cpu'))
+# model.eval()
 
 
-c = 4
-v = 150
+c = 1
+v = 50
 
 def get_or_create_node(state, parent=None):
     if isinstance(state, torch.Tensor):
@@ -160,7 +160,7 @@ class NODE:
     
     def backpropagate(self, value):
         self.W = max(self.W, value)
-        self.L = max(0, self.L - v)
+        self.L = max(0, self.L)
         
         if self.parent is not None:
             self.parent.backpropagate(value)
@@ -218,28 +218,28 @@ def mcts(state, num_simulations, max_solution_depth):
         return [], True
     
   
-    queue = [(root, [])]
-    visited = set()
+    # queue = [(root, [])]
+    # visited = set()
     
-    while queue and len(queue[0][1]) <= max_solution_depth:
-        current_node, path = queue.pop(0)
+    # while queue and len(queue[0][1]) <= max_solution_depth:
+    #     current_node, path = queue.pop(0)
         
-        state_key = tuple(current_node.state.cpu().numpy().flatten())
-        if state_key in visited:
-            continue
-        visited.add(state_key)
+    #     state_key = tuple(current_node.state.cpu().numpy().flatten())
+    #     if state_key in visited:
+    #         continue
+    #     visited.add(state_key)
         
-        if not current_node.children_nodes:
-            current_node.expand()
+    #     if not current_node.children_nodes:
+    #         current_node.expand()
         
-        for i, child in enumerate(current_node.children_nodes):
-            new_path = path + [i]
+    #     for i, child in enumerate(current_node.children_nodes):
+    #         new_path = path + [i]
             
-            if child.is_solved:
-                return new_path, True
+    #         if child.is_solved:
+    #             return new_path, True
             
-            if len(new_path) < max_solution_depth:
-                queue.append((child, new_path))
+    #         if len(new_path) < max_solution_depth:
+    #             queue.append((child, new_path))
     
    
     solution_found = False
@@ -249,7 +249,7 @@ def mcts(state, num_simulations, max_solution_depth):
         current = root
         path = [current]
         depth = 0
-        max_depth = 8
+        max_depth = 150
         
         while current.children_nodes and not current.is_solved and depth < max_depth:
             action_idx = current.selection()
