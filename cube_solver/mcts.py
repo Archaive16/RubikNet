@@ -160,7 +160,7 @@ class NODE:
     
     def backpropagate(self, value):
         self.W = max(self.W, value)
-        self.L = max(0, self.L)
+        # self.L = max(0, self.L)
         
         if self.parent is not None:
             self.parent.backpropagate(value)
