@@ -2,7 +2,7 @@ from cube import Cube
 from adi import ADI
 import time
 import torch
-from mcts import mcts, NODE , get_cube_child_states, find_action_index_external, encode_cube_state, decode_cube_state
+from test_mcts import mcts, NODE , get_cube_child_states, find_action_index_external, encode_cube_state, decode_cube_state
 solved =0
 num_test=10
 
