@@ -252,7 +252,7 @@ def mcts(state, num_simulations, max_solution_depth):
         max_depth = 150
         do_again = True
         while do_again:
-            while current.children_nodes and not current.is_solved and depth < max_depth:
+            if current.children_nodes and not current.is_solved and depth < max_depth:
                 action_idx = current.selection()
                 if action_idx is None:
                     break
@@ -271,7 +271,7 @@ def mcts(state, num_simulations, max_solution_depth):
             if solution_found:
                 break
             
-            while not current.is_solved and not current.children_nodes:
+            if not current.is_solved and not current.children_nodes:
                 current.expand()
             
                 for i, child in enumerate(current.children_nodes):
@@ -293,6 +293,7 @@ def mcts(state, num_simulations, max_solution_depth):
                         path.append(current)
                         for node in reversed(path):
                             node.backpropagate(value)
+                        depth += 1
         
             if solution_found:
                 break
