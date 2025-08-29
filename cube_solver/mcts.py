@@ -17,6 +17,7 @@ def get_cube_child_states(cube):
     
     return children
 
+
 def find_action_index_external(parent_state, child_state, cube_moves):
     try:
         if isinstance(parent_state, torch.Tensor):
@@ -72,13 +73,13 @@ def decode_cube_state(encoded_state):
     return decoded
 
 
-# model = ADI()
-# model.load_state_dict(torch.load("deepcube_adi_model.pth", map_location='cpu'))
-# model.eval()
+model = ADI()
+model.load_state_dict(torch.load("deepcube_adi_model.pth", map_location='cpu'))
+model.eval()
 
 
-c = 1
-v = 50
+c = 10
+v = 100
 
 def get_or_create_node(state, parent=None):
     if isinstance(state, torch.Tensor):
@@ -102,20 +103,18 @@ class NODE:
         self.N = 0
         self.W = 0
         self.L = 0
-        self.P = 1.0
+        self.P = 0
         self.U = 0
         self.Q = 0
         self.total = 0
         self.parent = parent
         
-        try:
-            with torch.no_grad():
-                policy_logits, value = model(state)
-            self.policy_logits = policy_logits.squeeze() if policy_logits.dim() > 1 else policy_logits
-            self.value = value.item() if torch.is_tensor(value) else value
-        except Exception:
-            self.policy_logits = torch.ones(12)
-            self.value = 0.0
+        
+        with torch.no_grad():
+            policy_logits, value = model(state)
+        self.policy_logits = policy_logits.squeeze() if policy_logits.dim() > 1 else policy_logits
+        self.value = value.item() if torch.is_tensor(value) else value
+        
         
         try:
             decoded_state = decode_cube_state(state)
@@ -126,37 +125,40 @@ class NODE:
             self.is_solved = False
         
         if self.parent is not None and self.cube is not None:
-            try:
                 move_i = find_action_index_external(self.parent.state, self.state, self.cube.moves)
                 if move_i < len(self.parent.policy_logits):
                     self.P = self.parent.policy_logits[move_i].item()
-                else:
-                    self.P = 0.1
-            except Exception:
-                self.P = 0.1
         
         self.update_values()
+
+   
     
     def update_values(self):
         sum_N = sum(child.N for child in self.children_nodes)
         self.U = (c * self.P * (sum_N ** 0.5)) / (1 + self.N)
-        self.Q = self.W - self.L
+        
         self.total = self.Q + self.U
     
     def selection(self):
-        if not self.children_nodes:
-            return None
+        current = self
+        path = [current]
+    
+        while current.children_nodes and not current.is_solved:
+        # Update UCB1 values for all children
+            for child in current.children_nodes:
+                child.update_values()
         
-        for child in self.children_nodes:
-            child.update_values()
-        
-        child_values = [child.total for child in self.children_nodes]
+        # Select child with highest UCB1 value
+            if not current.children_nodes:
+                break
+            
+        child_values = [child.total for child in current.children_nodes]
         best_child_idx = np.argmax(child_values)
         
-        self.N += 1
-        self.L += v
-        
-        return best_child_idx
+        current = current.children_nodes[best_child_idx]
+        path.append(current)
+    
+        return current, path    
     
     def backpropagate(self, value):
         self.W = max(self.W, value)
@@ -195,7 +197,7 @@ class NODE:
         except Exception:
             pass
 
-def mcts(state, num_simulations, max_solution_depth):
+def mcts(state, num_simulations):
     NODE._existing_nodes = {}
     
     try:
@@ -246,55 +248,41 @@ def mcts(state, num_simulations, max_solution_depth):
     solution_node = None
     
     for simulation in range(num_simulations):
-        current = root
-        path = [current]
-        depth = 0
-        max_depth = 150
+    # Selection: get leaf and path
+        leaf, path = root.selection()
+    
+    # Check if already solved
+        if leaf.is_solved:
+            solution_found = True
+            solution_node = leaf
+            break
+    
+    # Expansion
+        if not leaf.children_nodes:
+            leaf.expand()
+    
+    # If expansion created children, select one
+        if leaf.children_nodes:
+            leaf.update_values()
+            child_values = [child.total for child in leaf.children_nodes]
+            best_idx = np.argmax(child_values)
+            selected_child = leaf.children_nodes[best_idx]
         
-        while current.children_nodes and not current.is_solved and depth < max_depth:
-            action_idx = current.selection()
-            if action_idx is None:
-                break
-                
-            current = current.children_nodes[action_idx]
-            path.append(current)
-            depth += 1
-            
-            if current.is_solved:
+            if selected_child.is_solved:
                 solution_found = True
-                solution_node = current
+                solution_node = selected_child
                 break
         
-        if solution_found:
-            break
-            
-        if not current.is_solved and not current.children_nodes:
-            current.expand()
-            
-            for i, child in enumerate(current.children_nodes):
-                if child.is_solved:
-                    solution_found = True
-                    solution_node = child
-                    break
-            
-            if not solution_found and current.children_nodes:
-                child_values = []
-                for child in current.children_nodes:
-                    child.update_values()
-                    child_values.append(child.value + child.U)
-                
-                if child_values:
-                    best_child_idx = np.argmax(child_values)
-                    current = current.children_nodes[best_child_idx]
-                    path.append(current)
-        
-        if solution_found:
-            break
-        
-        value = current.value
-        
-        for node in reversed(path):
-            node.backpropagate(value)
+        # Backpropagate from selected child
+        value = selected_child.value
+        path.append(selected_child)
+    else:
+        # No children created, use leaf's value
+        value = leaf.value
+    
+    # Backpropagation
+    for node in path:
+        node.backpropagate(value)
     
     if solution_found and solution_node:
         solution_path = []

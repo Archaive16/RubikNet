@@ -16,7 +16,7 @@ for i in range(num_test):
     cube.scramble(5)
     print(cube.move_history)
 
-    action_path, is_solved = mcts(cube.state, num_simulations=500, max_solution_depth=15)
+    action_path, is_solved = mcts(cube.state, 500)
     print(action_path)
 
     if is_solved and action_path:
