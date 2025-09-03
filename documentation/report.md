@@ -49,7 +49,7 @@ Our implementation combines three complementary search strategies, each leveragi
 >    Generate all possible child states and attach as children  
 >
 >   # Evaluation  
->   $v = \text{network\_value}(s)$ for current state 
+>   $v = \mathrm{network\_value}(s)$ for current state 
 >
 >   # Backpropagation  
 >   For each node in path (from leaf back to root):  
@@ -79,7 +79,7 @@ Our implementation combines three complementary search strategies, each leveragi
 >
 >    If child not in $g$-scores or tentative $g < g(\text{child})$:  
 >     $g(\text{child}) = \text{tentative } g$  
->     $h = -\, \text{network\_value}(\text{child})$  # heuristic estimate  
+>     $h = -\, \mathrm{network\_value}(\mathrm{child})$  # heuristic estimate  
 >     $f = g(\text{child}) + h$  
 >     Push child into open set with priority $f$  
 >
@@ -102,7 +102,7 @@ Our implementation combines three complementary search strategies, each leveragi
 >     Return reconstructed path from state  
 >
 >    For each child of state:  
->     score = network\_value(child)  
+>     $score = \mathrm{network\_value}(\mathrm{child})$
 >     Add (child, score) to candidates  
 >
 >   Sort candidates by score (highest first)  
