@@ -5,7 +5,7 @@
 
 ## Abstract
 
-**_"So easy, a 3-year-old can do it,"_** but what about machines?  
+**_"So easy, a 3-year-old can do it,"_** but what about machines? 
 To answer this question, we present **RubikNet**.
 
 RubikNet provides a complete implementation of deep reinforcement learning for autonomous Rubik's Cube solving, combining AI algorithms with practical robotic deployment. Our system implements **Autodidactic Iteration (ADI)**, a self-supervised learning approach that trains neural networks to solve combinatorial puzzles without human domain knowledge. The project integrates multiple **search algorithms**, **computer vision** for state recognition, and a **hardware platform** for physical cube manipulation, achieving end-to-end automated solving capabilities.
