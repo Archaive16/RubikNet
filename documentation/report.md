@@ -49,7 +49,7 @@ Our implementation combines three complementary search strategies, each leveragi
 >    Generate all possible child states and attach as children  
 >
 >   # Evaluation  
->   $v = \text{network\_value}(s)$ for current state  
+>   $v = \text{network\_value}(s)$ for current state 
 >
 >   # Backpropagation  
 >   For each node in path (from leaf back to root):  
