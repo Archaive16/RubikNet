@@ -20,7 +20,7 @@ The Rubik's Cube represents one of the most challenging environments for reinfor
 ## The ADI Solution Paradigm
 Autodidactic Iteration addresses sparse rewards by reversing the traditional learning approach. Instead of starting from random states and hoping to find the goal, ADI begins from the known goal state and works backwards, systematically generating training data where the reward signal is always accessible. This creates a supervised learning problem from what was previously an intractable exploration challenge.
 
-For a comprehensive deep-dive into the ADI algorithm, including **mathematical foundations**, **implementation details**, and the broader implications for sparse reward learning, see our detailed blog post: **[Autodidactic Iteration: Learning Backwards from the Goal](adi_final.md)**. The blog explores everything you need to know about ADI that is in the scope of this implementaion.
+For a comprehensive deep-dive into the ADI algorithm, including **mathematical foundations**, **implementation details**, and the broader implications for sparse reward learning, see our detailed blog post: **[Autodidactic Iteration: Learning Backwards from the Goal](adi_blog.md)**. The blog explores everything you need to know about ADI that is in the scope of this implementaion.
 
 ## Search Algorithm Integration
 
