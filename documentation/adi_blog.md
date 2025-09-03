@@ -115,9 +115,11 @@ Optimizer = AdamW with parameter groups:
 **Algorithm: Weighting by Scramble Depth**
 
 For each training example with scramble depth $d$:  
+
 $$
- w = \frac{1}{\max(d, 1)}
+w = \frac{1}{\text{max}(d, 1)}
 $$
+
 The losses get multiplied by this constant. Hence, states closer to the solution receive higher weight.  
 
 ## Training Details
